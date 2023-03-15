@@ -11,7 +11,7 @@ app.use(express.static('public'));
 
 app.post('/api/gpt', async (req, res) => {
   const { message } = req.body;
-  const apiKey = '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';
+  const apiKey = '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';
   const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
 
   const prompt = `I am an AI language model created by OpenAI. My task is to provide a single coherent response to each user input. Please remember this while interpreting the following message.\n\nUser: ${message}\nGPT: `;
