@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 // Add this function to start the .jar file
 function startJarFile() {
-  const jarPath = '/CGA/public/game/Java/bukkit_command/craftbukkit-1.5.2-R1.0.jar';
+  const jarPath = './public/game/Java/bukkit_command/craftbukkit-1.5.2-R1.0.jar';
   const javaProcess = spawn('java', ['-jar', jarPath]);
 
   javaProcess.stdout.on('data', (data) => {
