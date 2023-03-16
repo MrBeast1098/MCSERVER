@@ -1,42 +1,24 @@
-const express = require('express');
-const fetch = require('node-fetch');
-const cors = require('cors');
-const { spawn } = require('child_process'); // Add this line to import child_process
+const { spawn } = require('child_process');
 
-const app = express();
-const PORT = process.env.PORT || 3000;
+const startMinecraftServer = (path) => {
+  const server = spawn('java', ['-jar', path]);
 
-app.use(cors());
-app.use(express.json());
-app.use(express.static('public'));
-
-// Add this function to start the .jar file
-function startJarFile() {
-  const jarPath = './public/game/java/bukkit_command/game.jar';
-  const javaProcess = spawn('java', ['-jar', jarPath]);
-
-  javaProcess.stdout.on('data', (data) => {
+  server.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
   });
 
-  javaProcess.stderr.on('data', (data) => {
+  server.stderr.on('data', (data) => {
     console.error(`stderr: ${data}`);
   });
 
-  javaProcess.on('close', (code) => {
-    console.log(`Java process exited with code ${code}`);
+  server.on('close', (code) => {
+    console.log(`Server process exited with code ${code}`);
   });
-}
+};
 
-startJarFile(); // Add this line to start the .jar file
+const gameJarPath = './public/game/java/bukkit_command/game.jar';
+const bungeeJarPath = './public/game/java/bungee_command/bungee-dist.jar';
 
-app.post('/api/gpt', async (req, res) => {
-  // ... (the rest of your existing code)
-});
-
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log(`Server is running on port ${port}`);
-});
-
+startMinecraftServer(gameJarPath);
+startMinecraftServer(bungeeJarPath);
 
