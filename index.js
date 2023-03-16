@@ -18,10 +18,8 @@ const startMinecraftServer = (path) => {
 };
 
 const gameJarPath = './public/game/java/bukkit_command/game.jar';
-const bungeeJarPath = './public/game/java/bungee_command/bungee-dist.jar';
 
 startMinecraftServer(gameJarPath);
-startMinecraftServer(bungeeJarPath);
 
 const wsServer = new WebSocket.Server({ port: 3000 });
 
