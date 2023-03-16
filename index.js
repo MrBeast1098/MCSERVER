@@ -12,7 +12,7 @@ app.use(express.static('public'));
 
 // Add this function to start the .jar file
 function startJarFile() {
-  const jarPath = './public/game/Java/bukkit_command/game.jar';
+  const jarPath = './public/game/java/bukkit_command/game.jar';
   const javaProcess = spawn('java', ['-jar', jarPath]);
 
   javaProcess.stdout.on('data', (data) => {
