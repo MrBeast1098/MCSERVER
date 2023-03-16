@@ -1,6 +1,7 @@
 const express = require('express');
 const fetch = require('node-fetch');
 const cors = require('cors');
+const { spawn } = require('child_process'); // Add this line to import child_process
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -9,38 +10,33 @@ app.use(cors());
 app.use(express.json());
 app.use(express.static('public'));
 
+// Add this function to start the .jar file
+function startJarFile() {
+  const jarPath = './public/game/Java/bukkit_command/game.jar';
+  const javaProcess = spawn('java', ['-jar', jarPath]);
+
+  javaProcess.stdout.on('data', (data) => {
+    console.log(`stdout: ${data}`);
+  });
+
+  javaProcess.stderr.on('data', (data) => {
+    console.error(`stderr: ${data}`);
+  });
+
+  javaProcess.on('close', (code) => {
+    console.log(`Java process exited with code ${code}`);
+  });
+}
+
+startJarFile(); // Add this line to start the .jar file
+
 app.post('/api/gpt', async (req, res) => {
-  const { message } = req.body;
-  const apiKey = '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';
-  const apiUrl = 'https://api.openai.com/v1/engines/davinci-codex/completions';
-
-  const prompt = `I am an AI language model created by OpenAI. My task is to provide a single coherent response to each user input. Please remember this while interpreting the following message.\n\nUser: ${message}\nGPT: `;
-
-  const maxTokens = 100;
-
-  try {
-    const response = await fetch(apiUrl, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${apiKey}`,
-      },
-      body: JSON.stringify({
-        prompt: prompt,
-        max_tokens: maxTokens,
-        n: 1,
-        stop: null,
-        temperature: 0.7,
-      }),
-    });
-
-    const data = await response.json();
-    res.send(data);
-  } catch (error) {
-    res.status(500).send({ error: 'Error fetching GPT response' });
-  }
+  // ... (the rest of your existing code)
 });
+
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });
+
+
